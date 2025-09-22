@@ -25,6 +25,10 @@ import tw.edu.pu.csim.tcyang.lotto.ui.theme.LottoTheme
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 
+// 匯入手勢相關的函式
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,11 +56,16 @@ fun Play(modifier: Modifier = Modifier) {
     Column (
         modifier = modifier
             .fillMaxSize()
-            .clickable { // <-- clickable 修飾符放在這裡
-                Toast.makeText(context, "螢幕觸控(陳芯霈)", Toast.LENGTH_SHORT).show()
+            // 替換 clickable 為 pointerInput 以取得座標
+            .pointerInput(Unit) {
+                detectTapGestures { offset ->
+                    val x = offset.x
+                    val y = offset.y
+                    Toast.makeText(context, "螢幕觸控: x=$x, y=$y", Toast.LENGTH_SHORT).show()
+                }
             },
-        verticalArrangement = Arrangement.Center, // <-- 參數被移到這裡
-        horizontalAlignment = Alignment.CenterHorizontally, // <-- 參數被移到這裡
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ){
         Text(
             text = "樂透數字(1-100)為 $lucky"
@@ -67,5 +76,6 @@ fun Play(modifier: Modifier = Modifier) {
         ) {
             Text("重新產生樂透碼")
         }
+        Text(text = "林彣媞共同編輯程式")
     }
 }
