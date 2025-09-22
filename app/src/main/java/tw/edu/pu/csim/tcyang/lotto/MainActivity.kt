@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,18 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import tw.edu.pu.csim.tcyang.lotto.ui.theme.LottoTheme
-
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-
-// 匯入手勢相關的函式
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.input.pointer.pointerInput
-
+import androidx.compose.foundation.gestures.detectTapGestures
+import tw.edu.pu.csim.tcyang.lotto.ui.theme.LottoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +63,17 @@ fun Play(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         Text(
-            text = "樂透數字(1-100)為 $lucky"
+            text = "樂透數字(1-100)為 $lucky",
+            modifier = Modifier.pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        lucky -= 1 // 短按時減1
+                    },
+                    onLongPress = {
+                        lucky += 1 // 長按時加1
+                    }
+                )
+            }
         )
 
         Button(
